@@ -123,7 +123,7 @@ function CreateEventPage() {
     };
 
     try {
-      const response = await fetch('http://localhost:8000/event', {
+      const response = await fetch('https://host-dir-qms-server-main.onrender.com/event', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -163,7 +163,7 @@ function CreateDeviationPage() {
     };
 
     try {
-      const response = await fetch('http://localhost:8000/deviation', {
+      const response = await fetch('https://host-dir-qms-server-main.onrender.com/deviation', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

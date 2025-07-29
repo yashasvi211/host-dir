@@ -27,7 +27,7 @@ function CapaDetail({ eventId }) {
     const fetchEvent = async () => {
       try {
         setLoading(true);
-        const response = await fetch(`http://localhost:8000/capa/${eventId}`);
+        const response = await fetch(`https://host-dir-qms-server-main.onrender.com/capa/${eventId}`);
         if (!response.ok) throw new Error('Failed to fetch CAPA details');
         const data = await response.json();
         setEvent(data);
@@ -63,7 +63,7 @@ function CapaDetail({ eventId }) {
   const handleStatusChange = async (newStatus) => {
     setCurrentStatus(newStatus);
     try {
-        const response = await fetch(`http://localhost:8000/event/capa/${eventId}/status`, {
+        const response = await fetch(`https://host-dir-qms-server-main.onrender.com/event/capa/${eventId}/status`, {
             method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ status: newStatus }),

@@ -27,7 +27,7 @@ function AuditDetail({ eventId }) {
     const fetchEvent = async () => {
       try {
         setLoading(true);
-        const response = await fetch(`http://localhost:8000/audit/${eventId}`);
+        const response = await fetch(`https://host-dir-qms-server-main.onrender.com/audit/${eventId}`);
         if (!response.ok) throw new Error('Failed to fetch audit details');
         const data = await response.json();
         setEvent(data);
@@ -63,7 +63,7 @@ function AuditDetail({ eventId }) {
   const handleStatusChange = async (newStatus) => {
     setCurrentStatus(newStatus);
     try {
-        const response = await fetch(`http://localhost:8000/event/audit/${eventId}/status`, {
+        const response = await fetch(`https://host-dir-qms-server-main.onrender.com/event/audit/${eventId}/status`, {
             method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ status: newStatus }),

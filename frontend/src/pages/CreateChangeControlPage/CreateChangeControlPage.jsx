@@ -155,7 +155,7 @@ function CreateChangeControlPage() {
     };
 
     try {
-      const response = await fetch('http://localhost:8000/change_control', {
+      const response = await fetch('https://host-dir-qms-server-main.onrender.com/change_control', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

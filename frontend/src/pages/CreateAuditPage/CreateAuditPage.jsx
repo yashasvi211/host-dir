@@ -181,7 +181,7 @@ function CreateAuditPage() {
     };
 
     try {
-      const response = await fetch('http://localhost:8000/audit', {
+      const response = await fetch('//https://host-dir-qms-server-main.onrender.com//audit', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

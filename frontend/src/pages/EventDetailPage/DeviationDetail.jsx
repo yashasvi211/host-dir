@@ -27,7 +27,7 @@ function DeviationDetail({ eventId }) {
     const fetchEvent = async () => {
       try {
         setLoading(true);
-        const response = await fetch(`http://localhost:8000/deviation/${eventId}`);
+        const response = await fetch(`https://host-dir-qms-server-main.onrender.com/deviation/${eventId}`);
         if (!response.ok) throw new Error('Failed to fetch Deviation details');
         const data = await response.json();
         setEvent(data);
@@ -63,7 +63,7 @@ function DeviationDetail({ eventId }) {
   const handleStatusChange = async (newStatus) => {
     setCurrentStatus(newStatus);
     try {
-        const response = await fetch(`http://localhost:8000/event/deviation/${eventId}/status`, {
+        const response = await fetch(`https://host-dir-qms-server-main.onrender.com/event/deviation/${eventId}/status`, {
             method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ status: newStatus }),

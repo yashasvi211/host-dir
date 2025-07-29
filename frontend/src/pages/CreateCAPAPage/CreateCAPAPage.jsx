@@ -161,7 +161,7 @@ function CreateCAPAPage() {
     };
 
     try {
-      const response = await fetch('http://localhost:8000/capa', {
+      const response = await fetch('https://host-dir-qms-server-main.onrender.com/capa', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

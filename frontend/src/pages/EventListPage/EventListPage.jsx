@@ -45,7 +45,7 @@ function EventListPage() {
     const fetchEvents = async () => {
       try {
         setLoading(true);
-        const response = await fetch('http://localhost:8000/events');
+        const response = await fetch('https://host-dir-qms-server-main.onrender.com/events');
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }

@@ -46,7 +46,7 @@ function ChangeControlDetail({ eventId }) {
       const fetchSummary = async () => {
         setLoadingSummary(true);
         try {
-          const response = await fetch(`http://localhost:8001/event/change-control/${eventId}/summary`);
+          const response = await fetch(`https://host-dir-server-ai-agent.onrender.com/event/change-control/${eventId}/summary`);
           if (!response.ok) throw new Error('Failed to fetch AI summary');
           const data = await response.json();
           setAiSummary(data.summary);

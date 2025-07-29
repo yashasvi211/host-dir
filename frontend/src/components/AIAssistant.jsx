@@ -34,7 +34,7 @@ function AIAssistant() {
         setIsAiTyping(true);
 
         try {
-            const response = await fetch('http://localhost:8001/ai-chat', {
+            const response = await fetch('https://host-dir-server-ai-agent.onrender.com/ai-chat', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ query: input }),

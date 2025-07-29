@@ -74,11 +74,12 @@ app = FastAPI()
 # Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://host-dir.onrender.com/"],
+    allow_origins=["https://host-dir.onrender.com"],  # ✅ No trailing slash
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 
 # Database connection function
 def get_db_connection():

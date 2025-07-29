@@ -25,7 +25,7 @@ ai_app = FastAPI()
 # Allows the React frontend (running on localhost:5173) to communicate with this backend.
 ai_app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://host-dir.onrender.com/"], # The origin of your React app
+    allow_origins=["https://host-dir.onrender.com"], # The origin of your React app
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

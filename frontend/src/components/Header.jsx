@@ -45,7 +45,7 @@ function Header() {
             </button>
             {isDropdownOpen && (
               <div className="event-type-dropdown">
-                <button 
+                {/* <button 
                   onClick={(e) => {
                     e.stopPropagation();
                     navigate('/create-audit');
@@ -53,7 +53,7 @@ function Header() {
                   }}
                 >
                   Audit
-                </button>
+                </button> */}
                 <button 
                   onClick={(e) => {
                     e.stopPropagation();

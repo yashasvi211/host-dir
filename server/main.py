@@ -266,39 +266,50 @@ def create_change_control(change_control: ChangeControlCreate):
     finally:
         cursor.close()
         connection.close()
+class AuditCreate(BaseModel):
+    title: str
+    type: str
+    risk: Optional[str] = "None"
+    status: Optional[str] = "Planned"
+    scope: Optional[str] = None
+    objective: Optional[str] = None
+    auditee_name: str
+    site_location: str
+    country: str
+    primary_contact: str
+    contact_email: Optional[str] = None
+    audit_date: date
+    lead_auditor: str
+    members: Optional[str] = None
+    criteria: Optional[str] = None
+    agenda: Optional[str] = None
 
 @app.post("/audit")
 def create_audit(audit: AuditCreate):
-    connection = get_db_connection()
-    if connection is None:
-        raise HTTPException(status_code=500, detail="Database connection failed")
-
-    cursor = connection.cursor()
     try:
+        # Your DB insert logic here, for example:
         query = """
-        INSERT INTO audit (
-        title, type, risk, status, scope, objective, auditee_name, site_location, country,
-        primary_contact, contact_email, audit_date, lead_auditor, members, criteria, agenda
-        ) VALUES (
-        %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s
-        )
+        INSERT INTO audit (title, type, risk, status, scope, objective,
+        auditee_name, site_location, country, primary_contact, contact_email,
+        audit_date, lead_auditor, members, criteria, agenda)
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
         """
-        cursor.execute(query, (
-            audit.title, audit.type, audit.risk, audit.status, audit.scope, audit.objective,
-            audit.auditee_name, audit.site_location, audit.country, audit.primary_contact,
-            audit.contact_email, audit.audit_date, audit.lead_auditor, audit.members,
+
+        values = (
+            audit.title, audit.type, audit.risk, audit.status, audit.scope,
+            audit.objective, audit.auditee_name, audit.site_location,
+            audit.country, audit.primary_contact, audit.contact_email,
+            audit.audit_date, audit.lead_auditor, audit.members,
             audit.criteria, audit.agenda
-        ))
+        )
+
+        cursor = connection.cursor()
+        cursor.execute(query, values)
         connection.commit()
-        return {"message": "Audit created successfully.", "id": cursor.lastrowid}
-    except Error as e:
-        connection.rollback()
-        raise HTTPException(status_code=500, detail=f"Database error: {e}")
-    finally:
-        cursor.close()
-        connection.close()
 
-
+        return {"message": "Audit created successfully"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 # --- GET Endpoints for Detail Pages ---
 
 @app.get("/audit/{audit_id}")

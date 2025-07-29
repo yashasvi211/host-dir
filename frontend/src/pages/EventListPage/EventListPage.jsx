@@ -5,46 +5,49 @@ import './EventListPage.css';
 
 // Helper function to determine the CSS class for the status badge
 const getStatusBadgeClass = (status) => {
-    switch (status) {
-        case 'Planned': return 'status-planned';
-        case 'In Progress': return 'status-in-progress';
-        case 'Closed': return 'status-closed';
-        case 'Cancelled': return 'status-cancelled';
-        default: return 'status-default';
-    }
+  switch (status) {
+    case 'Planned': return 'status-planned';
+    case 'In Progress': return 'status-in-progress';
+    case 'Closed': return 'status-closed';
+    case 'Cancelled': return 'status-cancelled';
+    default: return 'status-default';
+  }
 };
 
 // Helper function to get the correct prefix for the event type
 const getEventTypePrefix = (eventType) => {
-    switch (eventType) {
-        case 'Audit':
-            return 'AUD';
-        case 'Change Control':
-            return 'CHC';
-        case 'CAPA':
-            return 'CPA';
-        case 'Deviation':
-            return 'DEV';
-        default:
-            // Fallback for any other types
-            return eventType.substring(0, 3).toUpperCase();
-    }
+  switch (eventType) {
+    case 'Audit':
+      return 'AUD';
+    case 'Change Control':
+      return 'CHC';
+    case 'CAPA':
+      return 'CPA';
+    case 'Deviation':
+      return 'DEV';
+    default:
+      return eventType.substring(0, 3).toUpperCase();
+  }
 };
 
 function EventListPage() {
-  // State for storing events, loading status, and errors
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  
-  const navigate = useNavigate();
   const [filtersVisible, setFiltersVisible] = useState(false);
 
-  // useEffect hook to fetch data when the component mounts
+  const navigate = useNavigate();
+
   useEffect(() => {
     const fetchEvents = async () => {
       try {
         setLoading(true);
+
+        // Wake up AI Agent backend
+        fetch('https://host-dir-server-ai-agent.onrender.com').catch(err =>
+          console.warn("Optional AI Agent wake-up failed:", err.message)
+        );
+
         const response = await fetch('https://host-dir-qms-server-main.onrender.com/events');
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -60,22 +63,18 @@ function EventListPage() {
     };
 
     fetchEvents();
-  }, []); // The empty dependency array ensures this runs only once on mount
+  }, []);
 
-  // Handle row click to navigate to a detail page
   const handleRowClick = (eventType, eventId) => {
     if (!eventType || !eventId) return;
-    // Create a URL-friendly path (e.g., "Change Control" becomes "change-control")
     const path = eventType.toLowerCase().replace(/\s+/g, '-');
     navigate(`/event/${path}/${eventId}`);
   };
 
-  // Render loading state
   if (loading) {
     return <div className="list-page-container"><p>Loading events...</p></div>;
   }
 
-  // Render error state
   if (error) {
     return <div className="list-page-container"><p>Error fetching data: {error}</p></div>;
   }
@@ -99,6 +98,9 @@ function EventListPage() {
       )}
 
       <div className="content-card">
+        <p className="load-warning">
+          ⚠️ Initial load might take a few seconds due to free hosting. Please wait...
+        </p>
         <div className="data-table-container">
           <table className="data-table">
             <thead>

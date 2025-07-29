@@ -156,55 +156,47 @@ function CreateAuditPage() {
   const handleNext = () => currentStep < WIZARD_STEPS.length && setCurrentStep(currentStep + 1);
   const handlePrev = () => currentStep > 1 && setCurrentStep(currentStep - 1);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setSubmitError(null);
-    setSubmitSuccess(false);
-
-    // Map frontend fields to backend/database fields and ensure all required fields are present
-    const apiPayload = {
-      title: formData.title,
-      type: formData.auditDetails.type,
-      scope: formData.auditDetails.scope,
-      objective: formData.auditDetails.objective,
-      auditee_name: formData.auditee.name,
-      site_location: formData.auditee.siteLocation,
-      country: formData.auditee.country,
-      primary_contact: formData.auditee.primaryContact,
-      contact_email: formData.auditee.contactEmail,
-      audit_date: formData.date,
-      lead_auditor: formData.team.leadAuditor,
-      team_members: formData.team.members,
-      criteria: formData.plan.criteria,
-      agenda: formData.plan.agenda,
-      risk: formData.risk,
-    };
-
-    try {
-      const response = await fetch('host-dir-qms-server-main.onrender.com/audit', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(apiPayload),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        setSubmitError(errorData.detail || 'Failed to create Audit');
-        throw new Error(errorData.detail || 'Failed to create Audit');
-      }
-
-      const result = await response.json();
-      console.log('Audit created:', result);
-      setSubmitSuccess(true);
-      setTimeout(() => {
-        navigate('/');
-      }, 1500);
-    } catch (error) {
-      console.error('Error:', error);
-    }
+ const handleSubmit = async () => {
+  const payload = {
+    title: formData.title,
+    type: formData.type,
+    risk: formData.risk,
+    status: formData.status,
+    scope: formData.scope,
+    objective: formData.objective,
+    auditee_name: formData.auditee_name,
+    site_location: formData.site_location,
+    country: formData.country,
+    primary_contact: formData.primary_contact,
+    contact_email: formData.contact_email,
+    audit_date: formData.audit_date,
+    lead_auditor: formData.lead_auditor,
+    members: formData.members,
+    criteria: formData.criteria,
+    agenda: formData.agenda
   };
+
+  try {
+    const response = await fetch('https://host-dir-qms-server-main.onrender.com/audit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+
+    if (!response.ok) {
+      const errText = await response.text();
+      throw new Error(`Server Error (${response.status}): ${errText}`);
+    }
+
+    const result = await response.json();
+    console.log("Audit Created:", result);
+    setSubmitSuccess(true);
+  } catch (err) {
+    console.error("Submission failed:", err.message);
+    setSubmitError(err.message);
+  }
+};
+
 
   const CurrentStepComponent = WIZARD_STEPS[currentStep - 1].component;
 
